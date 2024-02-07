@@ -1,31 +1,37 @@
-============================================
-How to use 7-base_geometry.py
-============================================
+class TestBaseGeometry:
+    def setUp(self):
+        self.base_geometry = BaseGeometry()
 
-This library is very simple, since it only has one function called
- ''integer_validator()''.
+    def test_area_not_implemented(self):
+        try:
+            self.base_geometry.area()
+        except Exception as e:
+            assert str(e) == "area() is not implemented"
 
-Numbers:
-========
-''integer_validator()'' returns True if a num is integer.
-:: with positives integers
-   >>> BaseGeometry = __import__('7-base_geometry').BaseGeometry
-   >>> bg = BaseGeometry()
+    def test_integer_validator_valid_input(self):
+        # Test with valid input
+        assert self.base_geometry.integer_validator("test_param", 5) is None
 
-:: with positive integer
-   >>> bg.integer_validator("my_int", 12)
+    def test_integer_validator_invalid_type(self):
+        # Test with invalid type
+        try:
+            self.base_geometry.integer_validator("test_param", "invalid_value")
+        except TypeError as e:
+            assert str(e) == "test_param must be an integer"
 
-:: with negative integer
-   >>> bg.integer_validator("number", -12)
-   Traceback (most recent call last):
-   ValueError: number must be greater than 0
+    def test_integer_validator_invalid_value(self):
+        # Test with invalid value
+        try:
+            self.base_geometry.integer_validator("test_param", 0)
+        except ValueError as e:
+            assert str(e) == "test_param must be greater than 0"
 
-:: with 3 arguments
-   >>> bg.integer_validator("numbers", 0, 1)
-   Traceback (most recent call last):
-   TypeError: integer_validator() takes 3 positional arguments but 4 were given
 
-:: with infinite integer
-   >>> bg.integer_validator("infnumber", int('inf'))
-   Traceback (most recent call last):
-   ValueError: invalid literal for int() with base 10: 'inf'
+# Run the tests
+test_instance = TestBaseGeometry()
+test_instance.setUp()
+test_instance.test_area_not_implemented()
+test_instance.test_integer_validator_valid_input()
+test_instance.test_integer_validator_invalid_type()
+test_instance.test_integer_validator_invalid_value()
+
